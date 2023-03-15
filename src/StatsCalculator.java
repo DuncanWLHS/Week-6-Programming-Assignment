@@ -5,14 +5,12 @@ public class StatsCalculator {
     private double[] values;
     private double[] sortedValues;
 
-    public double[] StatsCalculator(){
-        double[] arr = new double[20];
-        return arr;
+    public StatsCalculator() {
+        this.values = new double[20];
     }
 
-    public double[] StatsCalculator(double[] values) {
+    public StatsCalculator(double[] values) {
         this.values = values;
-        return values;
     }
 
     public void sortData() {
@@ -39,5 +37,56 @@ public class StatsCalculator {
         return min;
     }
 
+    public double calculateSum() {
+        double sum = 0;
+        for (int i = 0; i < values.length; i++) {
+            sum += values[i];
+        }
+        return sum;
+    }
 
+    public double calculateMean() {
+        double mean = 0;
+        for (int i = 0; i < values.length; i++) {
+            mean += values[i];
+        }
+        return mean/values.length;
+    }
+
+    public double calculateMedian() {
+        Arrays.sort(values);
+        double median = 0;
+        if (values.length % 2 == 0) {
+            int indexFirst = ((values.length / 2) -1);
+            int indexSecond = (indexFirst + 1);
+            median = (values[indexFirst]+values[indexSecond] / 2);
+            median /= 2;
+
+        }
+        return median;
+    }
+
+    public void print() {
+        System.out.print("Your data is: ");
+        for(double value: values){
+            System.out.print(value + ", ");
+        }
+        System.out.println();
+    }
+
+    public void printSorted() {
+        System.out.print("Your sorted data is: ");
+        Arrays.sort(values);
+        for(double value: values){
+            System.out.print(value + ", ");
+        }
+        System.out.println();
+    }
+
+    public void printFiveNumberSummary() {
+        System.out.println("The five number summary is: \n" +
+                "Minimum: " + this.calculateMin() + "\n" +
+                "Median: " + this.calculateMedian() + "\n" +
+                "Maximum: " + this.calculateMax());
+    }
 }
