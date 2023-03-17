@@ -14,7 +14,8 @@ public class StatsCalculator {
     }
 
     public void sortData() {
-        Arrays.sort(values);
+        sortedValues = Arrays.copyOf(values, values.length);
+        Arrays.sort(sortedValues);
     }
 
     public double calculateMax() {
@@ -56,15 +57,56 @@ public class StatsCalculator {
     public double calculateMedian() {
         Arrays.sort(values);
         double median = 0;
-        if (values.length % 2 == 0) {
-            int indexFirst = ((values.length / 2) -1);
-            int indexSecond = (indexFirst + 1);
-            median = (values[indexFirst]+values[indexSecond] / 2);
-            median /= 2;
-
+        if (values.length % 2 != 0) {
+           median = values[values.length / 2];
+            return median;
+        } else {
+            median = (values[values.length/2] + values[values.length/2 - 1])/2;
+            return median;
         }
-        return median;
+
     }
+
+    public double calculateFirstQuartile() {
+        Arrays.sort(values);
+        double[] quartileOne = new double[values.length / 2];
+
+        // copies first quartile of values into quartileOne
+        for (int i = 0; i < quartileOne.length - 1; i++) {
+            quartileOne[i] = values[i];
+        }
+        // Searching for Median in Quartile 1
+        if (quartileOne.length % 2 == 1) {
+            return quartileOne[quartileOne.length/2];
+        } else {
+            return (quartileOne[quartileOne.length / 2] + quartileOne[quartileOne.length / 2 -1]) / 2;
+        }
+    }
+
+    public double calculateThirdQuartile() {
+        double[] quartileThree;
+
+        if (values.length % 2 == 1) {
+            quartileThree = new double[values.length / 2];
+
+            int quartileThreeIndex = 0;
+            for (int i = values.length / 2 + 1; i < values.length; i++) {
+                quartileThree[quartileThreeIndex] = values[i];
+                quartileThreeIndex++;
+            }
+                return quartileThree[quartileThree.length / 2];
+
+        } else {
+            quartileThree = new double[values.length / 2];
+            int quartileThreeIndex = 0;
+            for (int i = values.length / 2; i < values.length - 1; i++) {
+                quartileThree[quartileThreeIndex] = values[i];
+                quartileThreeIndex++;
+            }
+                return quartileThree[quartileThree.length / 2];
+        }
+    }
+
 
     public void print() {
         System.out.print("Your data is: ");
@@ -76,8 +118,8 @@ public class StatsCalculator {
 
     public void printSorted() {
         System.out.print("Your sorted data is: ");
-        Arrays.sort(values);
-        for(double value: values){
+        this.sortData();
+        for(double value: sortedValues){
             System.out.print(value + ", ");
         }
         System.out.println();
@@ -85,8 +127,10 @@ public class StatsCalculator {
 
     public void printFiveNumberSummary() {
         System.out.println("The five number summary is: \n" +
-                "Minimum: " + this.calculateMin() + "\n" +
-                "Median: " + this.calculateMedian() + "\n" +
-                "Maximum: " + this.calculateMax());
+                " \t Minimum: " + this.calculateMin() + "\n" +
+                " \t First Quartile: " + this.calculateFirstQuartile() + "\n" +
+                " \t Median: " + this.calculateMedian() + "\n" +
+                " \t Third Quartile: " + this.calculateThirdQuartile() + "\n" +
+                " \t Maximum: " + this.calculateMax());
     }
 }
